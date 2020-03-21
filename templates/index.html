@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>The Epidemic Curve</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row text-center">
+            <h1 class="display-4">Epidemic Curves</h1>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <canvas id="delhiChart" width="100" height="100"></canvas>
+            </div>
+            <div class="col-md-6">
+                <canvas id="gujChart" width="100" height="100"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+
+    <script>
+        let dates, infected;
+        $(function () {
+            $.ajax({
+                url: '/getData',
+                type: 'GET',
+                success: function (response) {
+                    delhi_dates = response['delhi_dates'];
+                    delhi_infected = response['delhi_infected'];
+
+                    var ctx = document.getElementById('delhiChart');
+                    var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: delhi_dates,
+                            datasets: [{
+                                label: 'Number of Infected People',
+                                backgroundColor: 'rgba(220, 20, 60, 0.5)',
+                                data: delhi_infected,
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            title: {
+                                display: true,
+                                text: 'Delhi',
+                            },
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        display: false
+                                    }
+                                }]
+                            }
+                        }
+                    });
+
+                    gujarat_dates = response['gujarat_dates']
+                    gujarat_infected = response['gujarat_infected']
+
+                    var ctx = document.getElementById('gujChart');
+                    var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: gujarat_dates,
+                            datasets: [{
+                                label: 'Number of Infected People',
+                                backgroundColor: 'rgba(220, 20, 60, 0.5)',
+                                data: gujarat_infected,
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            title: {
+                                display: true,
+                                text: 'Gujarat',
+                            },
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        display: false
+                                    }
+                                }]
+                            }
+                        }
+                    });
+
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        });
+
+
+    </script>
+</body>
+
+</html>
