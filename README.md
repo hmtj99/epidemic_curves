@@ -1,4 +1,4 @@
-# epidemic_curves
+# COVID-19 Epidemic curves
 
 A simple website to show the epidemic curves for various states in India
 
